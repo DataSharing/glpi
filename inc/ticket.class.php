@@ -4382,6 +4382,8 @@ class Ticket extends CommonITILObject {
                   if (self::canUpdate() ) {
                      echo "<input type='submit' class='submit' name='update' value='".
                             _sx('button', 'Save')."'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                     echo "<input type='submit' class='submit' name='updateandclose' value'".
+                           _sx('button','SaveAndClose')."'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                   }
                }
                if ($this->fields["is_deleted"] == 1) {
