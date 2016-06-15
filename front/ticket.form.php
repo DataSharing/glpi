@@ -75,7 +75,29 @@ if (isset($_POST["add"])) {
    Session::addMessageAfterRedirect(__('You have been redirected because you no longer have access to this ticket'),
                                     true, ERROR);
    Html::redirect($CFG_GLPI["root_doc"]."/front/ticket.php");
+   
+}else if (isset($_POST['updateandclose'])) {
+   $track->check($_POST['id'], UPDATE);
 
+
+   $track->update($_POST);
+   Event::log($_POST["id"], "ticket", 4, "tracking",
+              //TRANS: %s is the user login
+              sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
+
+
+   if ($track->can($_POST["id"], READ)) {
+      $toadd = '';
+      // Copy solution to KB redirect to KB
+      if (isset($_POST['_sol_to_kb']) && $_POST['_sol_to_kb']) {
+         $toadd = "&_sol_to_kb=1";
+      }
+      Html::redirect($CFG_GLPI["root_doc"]."/front/ticket.php");
+   }
+   Session::addMessageAfterRedirect(__('You have been redirected because you no longer have access to this ticket'),
+                                    true, ERROR);
+   Html::redirect($CFG_GLPI["root_doc"]."/front/ticket.php");
+   
 } else if (isset($_POST['delete'])) {
    $track->check($_POST['id'], DELETE);
    if ($track->delete($_POST)) {
